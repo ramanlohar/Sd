@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 10%;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Document Viewer</h1>
+
+    <div id="documentList"></div>
+
+    <script>
+        // Retrieve documents from local storage
+        const documents = JSON.parse(localStorage.getItem('documents')) || [];
+
+        // Display documents
+        const documentList = document.getElementById('documentList');
+        documents.forEach(document => {
+            const img = documentList.appendChild(document.createElement('img'));
+            img.src = `showimage.html#${document.id}`;
+            img.alt = document.name;
+            img.onclick = () => {
+                // Set active image in local storage
+                localStorage.setItem('activeImage', document.id);
+                window.location.href = 'showimage.html';
+            };
+        });
+    </script>
+</body>
+</html>
