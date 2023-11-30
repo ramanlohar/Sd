@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Viewer</h1>
+
+    <img id="preview" src="" alt="Image Preview" />
+
+    <button onclick="goBack()">Back to Documents</button>
+
+    <script>
+        // Retrieve active image ID from local storage
+        const activeImageID = localStorage.getItem('activeImage');
+
+        // Display the active image
+        const preview = document.getElementById('preview');
+        const activeDocument = documents.find(doc => doc.id === activeImageID);
+
+        if (activeDocument) {
+            preview.src = activeDocument.fileName;
+        } else {
+            alert('No active image found.');
+        }
+
+        function goBack() {
+            window.location.href = 'document.html';
+        }
+    </script>
+</body>
+</html>
