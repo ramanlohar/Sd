@@ -3,69 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Document Storage</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        input, button {
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
     <input type="file" accept="image/png, image/jpeg, image/jpg" id="fileInput" />
     <input type="text" placeholder="Document Name" id="documentName" />
     <button onclick="saveDocument()">Save Document</button>
+    <a href="document.html">View Documents</a>
 
+    <script src="script.js"></script>
+</body>
     <script>
         function saveDocument() {
-            const fileInput = document.getElementById('fileInput');
-            const documentNameInput = document.getElementById('documentName');
+    const fileInput = document.getElementById('fileInput');
+    const documentNameInput = document.getElementById('documentName');
 
-            const file = fileInput.files[0];
+    const file = fileInput.files[0];
 
-            if (!file) {
-                alert('Please choose a file.');
-                return;
-            }
+    if (!file) {
+        alert('Please choose a file.');
+        return;
+    }
 
-            const documentName = documentNameInput.value.trim();
+    const documentName = documentNameInput.value.trim();
 
-            if (!documentName) {
-                alert('Please enter a document name.');
-                return;
-            }
+    if (!documentName) {
+        alert('Please enter a document name.');
+        return;
+    }
 
-            const uniqueID = generateUniqueID();
-            const reference = {
-                id: uniqueID,
-                name: documentName,
-                fileName: `${uniqueID}_${file.name}`,
-            };
+    const uniqueID = generateUniqueID();
+    const imageID = `IMG${uniqueID}`;
+    const reference = {
+        id: uniqueID,
+        name: documentName,
+        fileName: `${imageID}_${file.name}`,
+    };
 
-            // Save the reference to local storage
-            const documents = JSON.parse(localStorage.getItem('documents')) || [];
-            documents.push(reference);
-            localStorage.setItem('documents', JSON.stringify(documents));
+    // Save the reference to local storage
+    const documents = JSON.parse(localStorage.getItem('documents')) || [];
+    documents.push(reference);
+    localStorage.setItem('documents', JSON.stringify(documents));
 
-            // You may want to consider using server-side storage for the actual file.
+    // Save the image to local storage
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        localStorage.setItem(imageID, event.target.result);
+    };
+    reader.readAsDataURL(file);
 
-            alert('Document saved successfully.');
-        }
+    alert('Document saved successfully.');
+}
 
-        function generateUniqueID() {
-            const date = new Date();
-            const uniqueID = `${date.getFullYear()}${padZero(date.getMonth() + 1)}${padZero(date.getDate())}${padZero(date.getHours())}${padZero(date.getMinutes())}${padZero(date.getSeconds())}${date.getMilliseconds()}`;
-            return uniqueID;
-        }
-
-        function padZero(value) {
-            return value < 10 ? `0${value}` : value;
-        }
     </script>
-</body>
 </html>
