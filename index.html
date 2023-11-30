@@ -12,49 +12,57 @@
     <button onclick="saveDocument()">Save Document</button>
     <a href="document.html">View Documents</a>
 
-    <script src="script.js"></script>
-</body>
     <script>
+        function generateUniqueID() {
+            const date = new Date();
+            const uniqueID = `${date.getFullYear()}${padZero(date.getMonth() + 1)}${padZero(date.getDate())}${padZero(date.getHours())}${padZero(date.getMinutes())}${padZero(date.getSeconds())}${date.getMilliseconds()}`;
+            return uniqueID;
+        }
+
+        function padZero(value) {
+            return value < 10 ? `0${value}` : value;
+        }
+
         function saveDocument() {
-    const fileInput = document.getElementById('fileInput');
-    const documentNameInput = document.getElementById('documentName');
+            const fileInput = document.getElementById('fileInput');
+            const documentNameInput = document.getElementById('documentName');
 
-    const file = fileInput.files[0];
+            const file = fileInput.files[0];
 
-    if (!file) {
-        alert('Please choose a file.');
-        return;
-    }
+            if (!file) {
+                alert('Please choose a file.');
+                return;
+            }
 
-    const documentName = documentNameInput.value.trim();
+            const documentName = documentNameInput.value.trim();
 
-    if (!documentName) {
-        alert('Please enter a document name.');
-        return;
-    }
+            if (!documentName) {
+                alert('Please enter a document name.');
+                return;
+            }
 
-    const uniqueID = generateUniqueID();
-    const imageID = `IMG${uniqueID}`;
-    const reference = {
-        id: uniqueID,
-        name: documentName,
-        fileName: `${imageID}_${file.name}`,
-    };
+            const uniqueID = generateUniqueID();
+            const imageID = `IMG${uniqueID}`;
+            const reference = {
+                id: uniqueID,
+                name: documentName,
+                fileName: `${imageID}_${file.name}`,
+            };
 
-    // Save the reference to local storage
-    const documents = JSON.parse(localStorage.getItem('documents')) || [];
-    documents.push(reference);
-    localStorage.setItem('documents', JSON.stringify(documents));
+            // Save the reference to local storage
+            const documents = JSON.parse(localStorage.getItem('documents')) || [];
+            documents.push(reference);
+            localStorage.setItem('documents', JSON.stringify(documents));
 
-    // Save the image to local storage
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        localStorage.setItem(imageID, event.target.result);
-    };
-    reader.readAsDataURL(file);
+            // Save the image to local storage
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                localStorage.setItem(imageID, event.target.result);
+            };
+            reader.readAsDataURL(file);
 
-    alert('Document saved successfully.');
-}
-
+            alert('Document saved successfully.');
+        }
     </script>
+</body>
 </html>
